@@ -1,0 +1,22 @@
+﻿@page
+@model ActorsRazorPagesSample.Pages.Actors.DetailsModel
+@{
+}
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Actor.FirstName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Actor.FirstName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Actor.OscarWinner)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Actor.OscarWinner)
+    </dd>
+</dl>
+<div>
+    <img src="~/Images/@Model.Actor.ImageName" height="300" />
+</div>
