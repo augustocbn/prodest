@@ -1,0 +1,30 @@
+﻿@page
+@model ActorsRazorPagesSample.Pages.Actors.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Actors List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Known For</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model.Actors)
+        {
+            <tr>
+                <td>@actor.FirstName</td>
+                <td>@actor.LastName</td>
+                <td>@Html.DisplayFor(a => actor.KnownFor)</td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@actor.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
