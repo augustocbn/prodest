@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WorldJourney.Filters;
 using WorldJourney.Models;
 
 namespace WorldJourney
@@ -18,6 +19,7 @@ namespace WorldJourney
         {
             services.AddControllersWithViews();
             services.AddSingleton<IData, Data>();
+            services.AddScoped<LogActionFilterAttribute>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,14 +44,16 @@ namespace WorldJourney
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "TravelerRoute",
-                    pattern: "{controller}/{action}",
-                    defaults: new { controller = "Traveler", action = "Index" }
-                );
+                     name: "TravelerRoute",
+                     pattern: "{controller}/{action}/{name}",
+                     constraints: new { name = "[A-Za-z ]+" },
+                     defaults: new { controller = "Traveler", action = "Index", name = "Katie Bruce" });
 
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "defaultRoute",
+                    pattern: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" },
+                    constraints: new { id = "[0-9]+" });
             });
         }
     }

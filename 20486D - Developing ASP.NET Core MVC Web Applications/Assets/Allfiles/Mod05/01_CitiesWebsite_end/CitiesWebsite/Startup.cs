@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WorldJourney.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using CitiesWebsite.Services;
+using Microsoft.Extensions.Hosting;
 
-namespace WorldJourney
+namespace CitiesWebsite
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddSingleton<IData, Data>();
+            services.AddMvc();
+            services.AddSingleton<ICityProvider, CityProvider>();
+            services.AddSingleton<ICityFormatter, CityFormatter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,17 +39,17 @@ namespace WorldJourney
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(routes =>
             {
-                endpoints.MapControllerRoute(
-                    name: "TravelerRoute",
-                    pattern: "{controller}/{action}",
-                    defaults: new { controller = "Traveler", action = "Index" }
-                );
+                routes.MapControllerRoute(
+                name: "Default",
+                pattern: "{controller}/{action}",
+                defaults: new { controller = "City", action = "ShowCities" });
+            });
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Page not found");
             });
         }
     }
