@@ -1,0 +1,13 @@
+﻿@inject CitiesWebsite.Services.ICityFormatter cityFormatter
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    CitiesWebsite.Models.CityPopulation population = ViewBag.City.Population;
+}
+
+<h3>City Population (@population.Year)</h3>
+<p>City: @cityFormatter.GetFormattedPopulation(population.City)</p>
+<p>Urban: @cityFormatter.GetFormattedPopulation(population.Urban)</p>
+<p>Metro: @cityFormatter.GetFormattedPopulation(population.Metro)</p>
