@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cupcakes.Data;
+using Cupcakes.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,15 +16,29 @@ namespace Cupcakes
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ICupcakeRepository, CupcakeRepository>();
+
+            services.AddDbContext<CupcakeContext>(options => options.UseSqlServer(_configuration.GetConnectionString("CupcakeConnection")));
+
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CupcakeContext context)
         {
             if (env.IsDevelopment())
             {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
                 app.UseDeveloperExceptionPage();
             }
             else
