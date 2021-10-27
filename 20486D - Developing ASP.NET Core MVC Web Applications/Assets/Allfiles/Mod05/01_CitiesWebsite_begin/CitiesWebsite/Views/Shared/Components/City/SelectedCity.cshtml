@@ -3,3 +3,9 @@
 *@
 @{
 }
+<div>
+    <h2>
+        <a asp-action="ShowDataForCity" asp-route-cityname=@ViewBag.City.Name>@ViewBag.City.Name (Capital of @ViewBag.City.Country)</a>
+    </h2>
+    <img src="@Url.Action("GetImage", new { cityName = ViewBag.City.Name })" />
+</div>

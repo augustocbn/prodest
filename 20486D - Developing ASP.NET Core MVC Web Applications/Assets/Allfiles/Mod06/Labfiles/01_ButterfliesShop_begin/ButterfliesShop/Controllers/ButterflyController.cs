@@ -48,5 +48,36 @@ namespace ButterfliesShop.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        public IActionResult Create(Butterfly butterfly)
+        {
+            if (ModelState.IsValid)
+            {
+                butterfly.Id = _data.ButterfliesList.LastOrDefault().Id + 1;
+                _data.AddButterfly(butterfly);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(butterfly);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var indexViewModel = new IndexViewModel
+            {
+                Butterflies = _data.ButterfliesList
+            };
+
+            return View(indexViewModel);
+        }
     }
 }

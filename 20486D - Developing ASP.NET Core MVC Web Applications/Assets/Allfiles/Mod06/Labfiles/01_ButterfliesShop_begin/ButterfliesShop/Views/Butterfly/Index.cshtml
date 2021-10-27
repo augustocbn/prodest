@@ -1,4 +1,5 @@
-﻿
+﻿@model ButterfliesShop.Models.IndexViewModel
+
 @{
     Layout = null;
 }
@@ -12,5 +13,31 @@
     <link type="text/css" rel="stylesheet" href="~/css/butterflies-shop-styles.css" />
 </head>
 <body>
+    <div class="container">
+        <h1 class="main-title">Butterflies Shop</h1>
+        <p class="into">Welcome to our Web Store</p>
+        <button type="button" onclick="location.href='@Url.Action("Create", "Butterfly")'">Add Butterflies</button>
+        @*<a asp-controller="Butterfly" asp-action="Create">Add Butterflies</a>*@
+        @*@Html.ActionLink("Add Butterflies", "Create", "Butterfly")*@
+        <div class="img-container">
+            @foreach (var item in Model.Butterflies)
+            {
+                <div class="photo-index-card">
+                    <h3 class="display-picture-title">
+                        "@Html.DisplayFor(i => item.CommonName)"
+                    </h3>
+                    <div>
+                        <p class="display-label">
+                            @Html.DisplayNameFor(i => item.ButterflyFamily)
+                        </p>
+                        <br />
+                        <p class="display-label">
+                            @Html.DisplayFor(i => item.ButterflyFamily)
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </body>
 </html>
